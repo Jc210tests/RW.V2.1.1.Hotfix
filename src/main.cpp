@@ -166,7 +166,7 @@ void trackPosition() {
 // ============================================================================
 
 
-  double my_pid_target = 0;
+  double liftPidTarget = 0;
   PID pidLift(0, 0, 0);
 
 // void moveLiftToAngle(double targetangle) {
@@ -174,20 +174,22 @@ void trackPosition() {
 // }
   void liftPID(double target) {
     pidLift.setTarget(target);
-    pidLift.setIntegralMax(0);
-    pidLift.setIntegralRange(1);
-    pidLift.setSmallBigErrorTolerance(1, 1);
-    pidLift.setSmallBigErrorDuration(0, 0);
-    pidLift.setDerivativeTolerance(100);
+    pidLift.setIntegralMax(100);
+    pidLift.setIntegralRange(20);
+    pidLift.setSmallBigErrorTolerance(2, 5);
+    pidLift.setSmallBigErrorDuration(100, 200);
+    pidLift.setDerivativeTolerance(50);
     pidLift.setArrive(true);
-      double average = (left_lift.position(deg) + right_lift.position(deg)) / 2.0;
-  
-    lift.spin(fwd, pidLift.update(right_lift.position(deg)), volt);
+    double average = (left_lift.position(deg) + right_lift.position(deg)) / 2.0;
+    double output = pidLift.update(average);
+    
+    left_lift.spin(fwd, output, volt);
+    right_lift.spin(fwd, output, volt);
   }
 
   int liftPIDLoop() {
     while (true) {
-      liftPID(my_pid_target);
+      liftPID(liftPidTarget);
       wait(10, msec);
     }
     return 0;
@@ -249,7 +251,12 @@ task liftTask(liftPIDLoop);
     // Add subsystem button bindings here, e.g.:
     // if (controller_1.ButtonR1.pressing()) { ... }
     // DriveTo autotuner is     controller_1.ButtonY.pressed(runDistanceAutoTune);   paste it below, run the program in driver mode, and press y.
-
+if (controller_1.ButtonR1.pressing()) {
+      liftPidTarget = 90;  
+    }
+    if (controller_1.ButtonL1.pressing()) {
+      liftPidTarget = 0;  
+    }
 
     controller_1.ButtonY.pressed(runDistanceAutoTune);
 
