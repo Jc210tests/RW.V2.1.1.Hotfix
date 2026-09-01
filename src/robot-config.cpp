@@ -22,6 +22,9 @@ motor_group left_chassis = motor_group(left_chassis1, left_chassis2);
 motor right_chassis1 = motor(PORT3, ratio6_1, false);
 motor right_chassis2 = motor(PORT4, ratio6_1, false);
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2);
+motor_group lift = motor_group();
+motor right_lift = motor(PORT11, ratio36_1, true);
+motor left_lift = motor(PORT10, ratio36_1, true);
 
 // drivetrain(left, right, wheelTravel_in, trackWidth_in, wheelbase_in, units)
 drivetrain Drivetrain = drivetrain(left_chassis, right_chassis, 3.17, 6.57, 1.5, inches);

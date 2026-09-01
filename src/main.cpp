@@ -166,6 +166,33 @@ void trackPosition() {
 // ============================================================================
 
 
+  double my_pid_target = 0;
+  PID pidLift(0, 0, 0);
+
+// void moveLiftToAngle(double targetangle) {
+//   lift_target = targetangle;
+// }
+  void liftPID(double target) {
+    pidLift.setTarget(target);
+    pidLift.setIntegralMax(0);
+    pidLift.setIntegralRange(1);
+    pidLift.setSmallBigErrorTolerance(1, 1);
+    pidLift.setSmallBigErrorDuration(0, 0);
+    pidLift.setDerivativeTolerance(100);
+    pidLift.setArrive(true);
+      double average = (left_lift.position(deg) + right_lift.position(deg)) / 2.0;
+  
+    lift.spin(fwd, pidLift.update(right_lift.position(deg)), volt);
+  }
+
+  int liftPIDLoop() {
+    while (true) {
+      liftPID(my_pid_target);
+      wait(10, msec);
+    }
+    return 0;
+  }
+
 // ============================================================================
 // DRIVER CONTROL
 // ============================================================================
@@ -180,6 +207,8 @@ void telop() {
 
   // Start subsystem PID task(s) here, e.g.:
   // task armTask(armPIDLoop);
+task liftTask(liftPIDLoop); 
+
 
   while (true) {
     int left_pct  = 0;
@@ -216,7 +245,7 @@ void telop() {
     right_chassis.setVelocity(right_pct, percent);
     left_chassis.spin(forward);
     right_chassis.spin(forward);
-
+    
     // Add subsystem button bindings here, e.g.:
     // if (controller_1.ButtonR1.pressing()) { ... }
     // DriveTo autotuner is     controller_1.ButtonY.pressed(runDistanceAutoTune);   paste it below, run the program in driver mode, and press y.
@@ -244,10 +273,12 @@ void auton() {
 
   // Write your autonomous routine here.
 }
+//add more autons here 
+
 
 int main() {
   competition Competition = competition();
-  Competition.autonomous(auton);
+  Competition.autonomous(auton); //change to the right auton before downloading
   Competition.drivercontrol(telop);
   return 0;
 }
