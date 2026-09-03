@@ -15,30 +15,30 @@ controller controller_1 = controller(primary);
 // gearSetting: ratio36_1 (red), ratio18_1 (green), ratio6_1 (blue/5.5w)
 // Reverse motors as needed so that positive voltage spins the wheel forward.
 // ============================================================================
-motor left_chassis1  = motor(PORT1, ratio6_1, true);
-motor left_chassis2  = motor(PORT2, ratio6_1, true);
+motor left_chassis1  = motor(PORT11, ratio6_1, false);
+motor left_chassis2  = motor(PORT12, ratio6_1, true);
 motor_group left_chassis = motor_group(left_chassis1, left_chassis2);
 
-motor right_chassis1 = motor(PORT3, ratio6_1, false);
-motor right_chassis2 = motor(PORT4, ratio6_1, false);
+motor right_chassis1 = motor(PORT14, ratio6_1, true);
+motor right_chassis2 = motor(PORT20, ratio6_1, false);
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2);
-
+//redowload a clean copy
 // drivetrain(left, right, wheelTravel_in, trackWidth_in, wheelbase_in, units)
 drivetrain Drivetrain = drivetrain(left_chassis, right_chassis, 3.17, 6.57, 1.5, inches);
 
-inertial inertial_sensor = inertial(PORT9);
+inertial inertial_sensor = inertial(PORT1);
 
 // ── Tracking wheels ──────────────────────────────────────────────────────
 // Format: rotation(port, reversed)
 // Set to any unused port if you don't use tracking wheels.
-rotation horizontal_tracker = rotation(PORT10, true);
+rotation horizontal_tracker = rotation(PORT19, true);
 rotation vertical_tracker   = rotation(PORT16, true);
 
 // ── Distance sensors ──────────────────────────────────────────
-distance front_sensor = distance(PORT13);
-distance left_sensor = distance(PORT9);
-distance right_sensor = distance(PORT11);
-distance back_sensor = distance(PORT20);
+distance front_sensor = distance(PORT22);
+distance left_sensor = distance(PORT21);
+distance right_sensor = distance(PORT17);
+distance back_sensor = distance(PORT18);
 
 // ============================================================================
 // SUBSYSTEM DEVICES
@@ -50,9 +50,9 @@ distance back_sensor = distance(PORT20);
 // motor_group lift(left_lift, right_lift);
 // motor intake = motor(PORT8, ratio6_1, true);
 // ============================================================================
-motor_group lift = motor_group();
-motor right_lift = motor(PORT11, ratio36_1, true);
-motor left_lift = motor(PORT10, ratio36_1, true);
+motor right_lift = motor(PORT8, ratio36_1, true);
+motor left_lift = motor(PORT9, ratio36_1, true);
+motor_group lift = motor_group(left_lift, right_lift);
 
 
 // ============================================================================
@@ -60,7 +60,7 @@ motor left_lift = motor(PORT10, ratio36_1, true);
 // ============================================================================
 
 // Distance between the middles of the left and right wheels of the drive (in inches)
-double distance_between_wheels = 11.2;
+double distance_between_wheels = 11.25;
 
 // motor to wheel gear ratio * wheel diameter (in inches) * pi
 double wheel_distance_in = (48.0 / 72.0) * 3.1 * M_PI;

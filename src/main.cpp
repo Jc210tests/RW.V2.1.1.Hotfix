@@ -53,7 +53,7 @@ void initializeRandomSeed() {
 void drawWatermark() {
   Brain.Screen.setFont(monoXXL);
   Brain.Screen.setPenColor(white);
-  Brain.Screen.printAt(330, 230, "RW V2"); // bottom-right corner (480x272 screen)
+  Brain.Screen.printAt(330, 230, "8000k"); // bottom-right corner (480x272 screen)
   Brain.Screen.setFont(mono15);            // reset font for other prints
 }
 
@@ -165,30 +165,42 @@ void trackPosition() {
 // Then start it as a task in telop()/auton() with: task myTask(mySubsystemPIDLoop);
 // ============================================================================
 
-
+//lift left and right pid values
   double liftPidTarget = 0;
-  PID pidLift(0, 0, 0);
+  PID pidLiftLeft(.4, 0, 0);
+  PID pidLiftRight(.4, 0, 0);
 
 // void moveLiftToAngle(double targetangle) {
 //   lift_target = targetangle;
 // }
   void liftPID(double target) {
-    pidLift.setTarget(target);
-    pidLift.setIntegralMax(100);
-    pidLift.setIntegralRange(20);
-    pidLift.setSmallBigErrorTolerance(2, 5);
-    pidLift.setSmallBigErrorDuration(100, 200);
-    pidLift.setDerivativeTolerance(50);
-    pidLift.setArrive(true);
-    double average = (left_lift.position(deg) + right_lift.position(deg)) / 2.0;
-    double output = pidLift.update(average);
-    
-    left_lift.spin(fwd, output, volt);
-    right_lift.spin(fwd, output, volt);
+    pidLiftLeft.setTarget(target);
+    pidLiftRight.setTarget(target);
+    pidLiftLeft.setIntegralMax(100);
+    pidLiftRight.setIntegralMax(100);
+    pidLiftLeft.setIntegralRange(20);
+    pidLiftRight.setIntegralRange(20);
+    pidLiftLeft.setSmallBigErrorTolerance(2, 5);
+    pidLiftRight.setSmallBigErrorTolerance(2, 5);
+    pidLiftLeft.setSmallBigErrorDuration(100, 200);
+    pidLiftRight.setSmallBigErrorDuration(100, 200);
+    pidLiftLeft.setDerivativeTolerance(50);
+    pidLiftRight.setDerivativeTolerance(50);
+    pidLiftLeft.setArrive(true);
+    pidLiftRight.setArrive(true);
+
+    double leftOutput = pidLiftLeft.update(left_lift.position(deg));
+    double rightOutput = pidLiftRight.update(right_lift.position(deg));
+
+    left_lift.spin(fwd, leftOutput, volt);
+    right_lift.spin(fwd, rightOutput, volt);
   }
 
   int liftPIDLoop() {
+    liftPidTarget = (left_lift.position(deg) + right_lift.position(deg)) / 2.0;
     while (true) {
+      left_lift.setStopping(hold);
+      right_lift.setStopping(hold);
       liftPID(liftPidTarget);
       wait(10, msec);
     }
@@ -196,13 +208,23 @@ void trackPosition() {
   }
 
 // ============================================================================
+// HELPER WRAPPER FOR ODOMETRY TASK
+// ============================================================================
+int trackOdomTask() {
+  resetChassis();
+  trackOdom();
+  return 0;
+}
+
+// ============================================================================
 // DRIVER CONTROL
 // ============================================================================
 void telop() {
   vex::task updater(updateTask);
-  trackPosition();
+  vex::task trackTask(trackOdomTask);
   vex::task logposition(logPosition);
   update();
+  resetChassis();
   inertial_sensor.setRotation(0, degrees);
   left_chassis.setStopping(coast);
   right_chassis.setStopping(coast);
@@ -243,19 +265,17 @@ task liftTask(liftPIDLoop);
     if (left_pct  < -100) left_pct  = -100;
     if (right_pct >  100) right_pct =  100;
     if (right_pct < -100) right_pct = -100;
-    left_chassis.setVelocity(left_pct,  percent);
-    right_chassis.setVelocity(right_pct, percent);
-    left_chassis.spin(forward);
-    right_chassis.spin(forward);
+    left_chassis.spin(fwd, left_pct, percent);
+    right_chassis.spin(fwd, right_pct, percent);
     
     // Add subsystem button bindings here, e.g.:
-    // if (controller_1.ButtonR1.pressing()) { ... }
+ 
     // DriveTo autotuner is     controller_1.ButtonY.pressed(runDistanceAutoTune);   paste it below, run the program in driver mode, and press y.
-if (controller_1.ButtonR1.pressing()) {
-      liftPidTarget = 90;  
+    if (controller_1.ButtonR1.pressing()) {
+      liftPidTarget += 6;
     }
     if (controller_1.ButtonL1.pressing()) {
-      liftPidTarget = 0;  
+      liftPidTarget -= 6;
     }
 
     controller_1.ButtonY.pressed(runDistanceAutoTune);
@@ -268,10 +288,11 @@ if (controller_1.ButtonR1.pressing()) {
 // AUTONOMOUS
 // ============================================================================
 void auton() {
-  trackPosition();
+  vex::task trackTask(trackOdomTask);
   vex::task updater(updateTask);
   vex::task logposition(logPosition);
   update();
+  resetChassis();
   inertial_sensor.setRotation(0, degrees);
   correct_angle = normalizeTarget(0);
 
@@ -279,6 +300,7 @@ void auton() {
   // task armTask(armPIDLoop);
 
   // Write your autonomous routine here.
+ 
 }
 //add more autons here 
 
