@@ -277,12 +277,15 @@ task liftTask(liftPIDLoop);
     if (controller_1.ButtonL1.pressing()) {
       liftPidTarget -= 6;
     }
-
+    if (controller_1.ButtonDown.pressing()){
+      liftPidTarget = 0;
+    }
+}
     controller_1.ButtonY.pressed(runDistanceAutoTune);
 
     this_thread::sleep_for(20);
   }
-}
+
 
 // ============================================================================
 // AUTONOMOUS
@@ -296,11 +299,20 @@ void auton() {
   inertial_sensor.setRotation(0, degrees);
   correct_angle = normalizeTarget(0);
 
+
+task liftTask(liftPIDLoop); 
+
   // Start subsystem PID task(s) and reset subsystem encoders here, e.g.:
   // task armTask(armPIDLoop);
 
   // Write your autonomous routine here.
- 
+ liftPidTarget = 90;
+ liftPidTarget = 0;
+ liftPidTarget = 99;
+  printf("left: %.2f right: %.2f lifttarget: %.2f\n",left_lift.position(deg), right_lift.position(deg), liftPidTarget);
+
+
+
 }
 //add more autons here 
 
