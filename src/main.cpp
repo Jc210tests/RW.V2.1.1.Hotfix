@@ -231,7 +231,7 @@ void telop() {
 
   // Start subsystem PID task(s) here, e.g.:
   // task armTask(armPIDLoop);
-//task liftTask(liftPIDLoop); 
+task liftTask(liftPIDLoop); 
 
 
   while (true) {
