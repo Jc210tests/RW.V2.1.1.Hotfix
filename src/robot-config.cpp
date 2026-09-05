@@ -50,8 +50,8 @@ distance back_sensor = distance(PORT18);
 // motor_group lift(left_lift, right_lift);
 // motor intake = motor(PORT8, ratio6_1, true);
 // ============================================================================
-motor right_lift = motor(PORT8, ratio36_1, true);
-motor left_lift = motor(PORT9, ratio36_1, true);
+motor right_lift = motor(PORT8, ratio6_1, false);
+motor left_lift = motor(PORT9, ratio6_1, true);
 motor_group lift = motor_group(left_lift, right_lift);
 
 

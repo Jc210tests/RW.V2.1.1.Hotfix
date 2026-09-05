@@ -167,8 +167,8 @@ void trackPosition() {
 
 //lift left and right pid values
   double liftPidTarget = 0;
-  PID pidLiftLeft(.4, 0, 0);
-  PID pidLiftRight(.4, 0, 0);
+  PID pidLiftLeft(.8, 0, 0);
+  PID pidLiftRight(.8, 0, 0);
 
 // void moveLiftToAngle(double targetangle) {
 //   lift_target = targetangle;
@@ -231,7 +231,7 @@ void telop() {
 
   // Start subsystem PID task(s) here, e.g.:
   // task armTask(armPIDLoop);
-task liftTask(liftPIDLoop); 
+//task liftTask(liftPIDLoop); 
 
 
   while (true) {
@@ -272,13 +272,18 @@ task liftTask(liftPIDLoop);
  
     // DriveTo autotuner is     controller_1.ButtonY.pressed(runDistanceAutoTune);   paste it below, run the program in driver mode, and press y.
     if (controller_1.ButtonR1.pressing()) {
-      liftPidTarget += 6;
+      //liftPidTarget += 12;
+      left_lift.spin(fwd, 12, volt);
+    right_lift.spin(fwd, 12, volt);
     }
     if (controller_1.ButtonL1.pressing()) {
-      liftPidTarget -= 6;
+      //liftPidTarget -= 12;
+left_lift.spin(rev, 12, volt);
+    right_lift.spin(rev, 12, volt);
+
     }
     if (controller_1.ButtonDown.pressing()){
-      liftPidTarget = 0;
+     // liftPidTarget = 0;
     }
 }
     controller_1.ButtonY.pressed(runDistanceAutoTune);
