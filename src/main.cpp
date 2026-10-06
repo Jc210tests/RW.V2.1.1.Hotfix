@@ -230,7 +230,7 @@ void telop() {
   right_chassis.setStopping(coast);
 
   // Start subsystem PID task(s) here, e.g.:
-  // task armTask(armPIDLoop);
+  //task armTask(armPIDLoop);
 task liftTask(liftPIDLoop); 
 
 
@@ -278,12 +278,13 @@ task liftTask(liftPIDLoop);
     }
     if (controller_1.ButtonL1.pressing()) {
       //liftPidTarget -= 12;
-left_lift.spin(rev, 12, volt);
-    right_lift.spin(rev, 12, volt);
+left_lift.spin(reverse, 12, volt);
+    right_lift.spin(reverse, 12, volt);
 
     }
     if (controller_1.ButtonDown.pressing()){
      // liftPidTarget = 0;
+     
     }
 }
     controller_1.ButtonY.pressed(runDistanceAutoTune);
