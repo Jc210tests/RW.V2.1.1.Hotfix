@@ -43,6 +43,8 @@ extern distance back_sensor;
 extern motor right_lift;
 extern motor left_lift;
 extern motor_group lift;
+
+extern motor claw;
 // ============================================================================
 // DISTANCE SENSOR OFFSETS (only needed if using distance-sensor position reset)
 // ============================================================================

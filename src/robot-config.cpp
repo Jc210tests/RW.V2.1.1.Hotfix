@@ -55,24 +55,27 @@ motor left_lift = motor(PORT9, ratio6_1, true);
 motor_group lift = motor_group(left_lift, right_lift);
 
 
+motor claw = motor(PORT20, ratio6_1, false);
 // ============================================================================
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
 // ============================================================================
 
 // Distance between the middles of the left and right wheels of the drive (in inches)
 double distance_between_wheels = 11.25;
-
-// motor to wheel gear ratio * wheel diameter (in inches) * pi
-double wheel_distance_in = (48.0 / 72.0) * 3.1 * M_PI;
+// first part of formula excluded unless error.
+// robot travel / encoder distance ) * (motor to wheel gear ratio * wheel diameter (in inches) * pi)
+double wheel_distance_in = 1.2 *((60 / 60.0) * 3.2 * M_PI);
 
 // PID Constants for movement
 // distance_* : Linear PID for straight driving
 // turn_*     : PID for turning in place
 // heading_correction_* : PID for heading correction during linear movement
 // NOTE: these are placeholder values — run the auto-tuner or hand-tune before use.
-double distance_kp = 0, distance_ki = 0, distance_kd = 0;
-double turn_kp = 0, turn_ki = 0, turn_kd = 0;
-double heading_correction_kp = 0, heading_correction_ki = 0, heading_correction_kd = 0;
+
+//.505kp .042 kd
+double distance_kp = 0.550, distance_ki = 0, distance_kd = 0.060;
+double turn_kp = .2, turn_ki = 0, turn_kd = 0.03;
+double heading_correction_kp = 0.19, heading_correction_ki = 0, heading_correction_kd = 0.02;
 
 // Enable or disable the use of tracking wheels
 bool using_horizontal_tracker = false;
@@ -137,7 +140,7 @@ bool RemoteControlCodeEnabled = true;
 //   TANK         — Axis3 left side, Axis2 right side
 //   ARCADE       — Axis3 forward, Axis4 turn (both on left stick)
 //   SPLIT_ARCADE — Axis3 forward, Axis1 turn (left stick fwd, right stick turn)
-DriveScheme drive_scheme = TANK;
+DriveScheme drive_scheme = SPLIT_ARCADE;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
