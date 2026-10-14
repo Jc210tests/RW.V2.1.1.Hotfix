@@ -14,9 +14,11 @@ extern controller controller_1;
 // ── Drivetrain ────────────────────────────────────────────────────────────
 extern motor left_chassis1;
 extern motor left_chassis2;
+extern motor left_5;
 extern motor_group left_chassis;
 extern motor right_chassis1;
 extern motor right_chassis2;
+extern motor right_5;
 extern motor_group right_chassis;
 extern drivetrain Drivetrain;
 
