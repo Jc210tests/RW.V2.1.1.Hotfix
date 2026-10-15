@@ -17,18 +17,18 @@ controller controller_1 = controller(primary);
 // ============================================================================
 motor left_chassis1  = motor(PORT1, ratio6_1, true);
 motor left_chassis2  = motor(PORT4, ratio6_1, true);
-motor left_5 = motor(PORT3, ratio6_1, true);
+motor left_5 = motor(PORT3, ratio18_1, true);
 motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_5);
 
 motor right_chassis1 = motor(PORT14, ratio6_1, false);
 motor right_chassis2 = motor(PORT13, ratio6_1, false);
-motor right_5 = motor(PORT11, ratio6_1, false);
+motor right_5 = motor(PORT11, ratio18_1, false);
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_5);
 //redowload a clean copy
 // drivetrain(left, right, wheelTravel_in, trackWidth_in, wheelbase_in, units)
 drivetrain Drivetrain = drivetrain(left_chassis, right_chassis, 3.17, 6.57, 1.5, inches);
 
-inertial inertial_sensor = inertial(PORT1);
+inertial inertial_sensor = inertial(PORT2);
 
 // ── Tracking wheels ──────────────────────────────────────────────────────
 // Format: rotation(port, reversed)
@@ -57,7 +57,7 @@ motor left_lift = motor(PORT9, ratio6_1, true);
 motor_group lift = motor_group(left_lift, right_lift);
 
 
-motor claw = motor(PORT20, ratio6_1, false);
+motor claw = motor(PORT10, ratio6_1, false);
 // ============================================================================
 // USER-CONFIGURABLE PARAMETERS (CHANGE BEFORE USING THIS TEMPLATE)
 // ============================================================================
@@ -76,7 +76,7 @@ double wheel_distance_in = (36/48)*2.5*M_PI;
 
 //.505kp .042 kd
 double distance_kp = 0.295, distance_ki = 0, distance_kd = 0.000;
-double turn_kp = .2, turn_ki = 0, turn_kd = 0.03;
+double turn_kp = .4, turn_ki = 0, turn_kd = 0.2;
 double heading_correction_kp = 0.19, heading_correction_ki = 0, heading_correction_kd = 0.02;
 
 // Enable or disable the use of tracking wheels

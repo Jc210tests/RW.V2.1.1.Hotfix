@@ -232,7 +232,7 @@ void telop() {
   left_chassis.setStopping(brake);
   right_chassis.setStopping(brake);
 
-  const double liftMaxDeg = 180; // Set to your measured safe maximum.
+  const double liftMaxDeg = 2000; 
 
   while (true) {
     double throttle = driveDeadband(controller_1.Axis3.position());
@@ -258,12 +258,21 @@ void telop() {
 
       if (rightPos < liftMaxDeg) right_lift.spin(fwd, 12, volt);
       else right_lift.stop(hold);
+      
     } else if (controller_1.ButtonL1.pressing()) {
       left_lift.spin(reverse, 12, volt);
       right_lift.spin(reverse, 12, volt);
     } else {
       left_lift.stop(hold);
       right_lift.stop(hold);
+    }
+
+    if(controller_1.ButtonR2.pressing()) {
+      claw.spin(fwd, 12, volt);
+    } else if (controller_1.ButtonL2.pressing()) {
+      claw.spin(reverse, 12, volt);
+    }else {
+      claw.stop(hold);
     }
 
     this_thread::sleep_for(20);
@@ -280,7 +289,8 @@ void auton() {
   resetChassis();
   inertial_sensor.setRotation(0, degrees);
   correct_angle = normalizeTarget(0);
-
+left_chassis.setStopping(brake);
+right_chassis.setStopping(brake);
 
 task liftTask(liftPIDLoop); 
 
@@ -288,7 +298,9 @@ task liftTask(liftPIDLoop);
   // task armTask(armPIDLoop);
 
   // Write your autonomous routine here.
- driveTo(24, 200, true, 100);
+
+
+
   printf("left: %.2f right: %.2f lifttarget: %.2f\n",left_lift.position(deg), right_lift.position(deg), liftPidTarget);
 
 
