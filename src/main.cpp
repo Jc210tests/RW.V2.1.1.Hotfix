@@ -258,7 +258,7 @@ void telop() {
 
       if (rightPos < liftMaxDeg) right_lift.spin(fwd, 12, volt);
       else right_lift.stop(hold);
-      
+
     } else if (controller_1.ButtonL1.pressing()) {
       left_lift.spin(reverse, 12, volt);
       right_lift.spin(reverse, 12, volt);
@@ -289,6 +289,7 @@ void auton() {
   resetChassis();
   inertial_sensor.setRotation(0, degrees);
   correct_angle = normalizeTarget(0);
+  
 left_chassis.setStopping(brake);
 right_chassis.setStopping(brake);
 

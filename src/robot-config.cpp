@@ -26,7 +26,7 @@ motor right_5 = motor(PORT11, ratio18_1, false);
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_5);
 //redowload a clean copy
 // drivetrain(left, right, wheelTravel_in, trackWidth_in, wheelbase_in, units)
-drivetrain Drivetrain = drivetrain(left_chassis, right_chassis, 3.17, 6.57, 1.5, inches);
+drivetrain Drivetrain = drivetrain(left_chassis, right_chassis, 2.5, 6.57, 1.5, inches);
 
 inertial inertial_sensor = inertial(PORT2);
 
@@ -66,7 +66,7 @@ motor claw = motor(PORT10, ratio6_1, false);
 double distance_between_wheels = 12.15;
 // first part of formula excluded unless error.
 // robot travel / encoder distance ) * (motor to wheel gear ratio * wheel diameter (in inches) * pi)
-double wheel_distance_in = (36/48)*2.5*M_PI;
+double wheel_distance_in = (36/48)*2.75*M_PI;
 
 // PID Constants for movement
 // distance_* : Linear PID for straight driving
