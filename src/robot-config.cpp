@@ -20,20 +20,20 @@ motor left_chassis2  = motor(PORT4, ratio6_1, true);
 motor left_5 = motor(PORT3, ratio18_1, true);
 motor_group left_chassis = motor_group(left_chassis1, left_chassis2, left_5);
 
-motor right_chassis1 = motor(PORT14, ratio6_1, false);
+motor right_chassis1 = motor(PORT11, ratio6_1, false);
 motor right_chassis2 = motor(PORT13, ratio6_1, false);
-motor right_5 = motor(PORT11, ratio18_1, false);
+motor right_5 = motor(PORT14, ratio18_1, false);
 motor_group right_chassis = motor_group(right_chassis1, right_chassis2, right_5);
 //redowload a clean copy
 // drivetrain(left, right, wheelTravel_in, trackWidth_in, wheelbase_in, units)
 drivetrain Drivetrain = drivetrain(left_chassis, right_chassis, 2.5, 6.57, 1.5, inches);
 
-inertial inertial_sensor = inertial(PORT2);
+inertial inertial_sensor = inertial(PORT5);
 
 // ── Tracking wheels ──────────────────────────────────────────────────────
 // Format: rotation(port, reversed)
 // Set to any unused port if you don't use tracking wheels.
-rotation horizontal_tracker = rotation(PORT19, true);
+rotation horizontal_tracker = rotation(PORT20, true);
 rotation vertical_tracker   = rotation(PORT16, true);
 
 // ── Distance sensors ──────────────────────────────────────────
@@ -66,7 +66,7 @@ motor claw = motor(PORT10, ratio6_1, false);
 double distance_between_wheels = 12.15;
 // first part of formula excluded unless error.
 // robot travel / encoder distance ) * (motor to wheel gear ratio * wheel diameter (in inches) * pi)
-double wheel_distance_in = (36/48)*2.75*M_PI;
+double wheel_distance_in = (36.0/48.0)*2.5*M_PI;
 
 // PID Constants for movement
 // distance_* : Linear PID for straight driving
@@ -75,8 +75,8 @@ double wheel_distance_in = (36/48)*2.75*M_PI;
 // NOTE: these are placeholder values — run the auto-tuner or hand-tune before use.
 
 //.505kp .042 kd
-double distance_kp = 0.295, distance_ki = 0, distance_kd = 0.000;
-double turn_kp = .4, turn_ki = 0, turn_kd = 0.2;
+double distance_kp = 0.295, distance_ki = 0, distance_kd = 0.042;
+double turn_kp = .2, turn_ki = 0, turn_kd = 0.05;
 double heading_correction_kp = 0.19, heading_correction_ki = 0, heading_correction_kd = 0.02;
 
 // Enable or disable the use of tracking wheels

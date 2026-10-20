@@ -77,10 +77,10 @@ void update() {
     controller_1.Screen.print("Kp:%.3f Kd:%.3f  ", tuner_kp, tuner_kd);
   } else {
     controller_1.Screen.setCursor(1, 1);
-    controller_1.Screen.print("Hdg: %.1f      ", inertial_sensor.heading());
+    controller_1.Screen.print("Hdg: %.5f      ", inertial_sensor.heading());
 
     controller_1.Screen.setCursor(2, 1);
-    controller_1.Screen.print("X:%.1f Y:%.1f    ", x_pos, y_pos);
+    controller_1.Screen.print("X:%.5f Y:%.5f    ", x_pos, y_pos);
 
     controller_1.Screen.setCursor(3, 1);
     controller_1.Screen.print("Batt: %d%%    ", Brain.Battery.capacity());
@@ -102,6 +102,7 @@ void update() {
   }
 
   drawWatermark();
+  
 }
 
 int updateTask() {
@@ -289,22 +290,20 @@ void auton() {
   resetChassis();
   inertial_sensor.setRotation(0, degrees);
   correct_angle = normalizeTarget(0);
-  
+
 left_chassis.setStopping(brake);
 right_chassis.setStopping(brake);
 
-task liftTask(liftPIDLoop); 
+//task liftTask(liftPIDLoop); 
 
   // Start subsystem PID task(s) and reset subsystem encoders here, e.g.:
   // task armTask(armPIDLoop);
 
   // Write your autonomous routine here.
 
-
-
-  printf("left: %.2f right: %.2f lifttarget: %.2f\n",left_lift.position(deg), right_lift.position(deg), liftPidTarget);
-
-
+moveToPoint(0,10,1,1000,true, 12, false);
+turnToAngle(90, 1000, true, 12);
+driveTo(10, 1000, true, 12);
 
 }
 //add more autons here 

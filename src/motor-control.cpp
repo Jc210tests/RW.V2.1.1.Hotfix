@@ -26,6 +26,8 @@ double field_half_size = 70.25;  // Half field size in inches
  * - right_power: Voltage for the right side (in volts).
  */
 void driveChassis(double left_power, double right_power) {
+  //  left_power = fmax(fmin(left_power, 12.0), -12.0);
+ //right_power = fmax(fmin(right_power, 12.0), -12.0);
   // Spin left and right chassis motors with specified voltages
   left_chassis.spin(fwd, left_power, voltageUnits::volt);
   right_chassis.spin(fwd, right_power, voltageUnits::volt);
