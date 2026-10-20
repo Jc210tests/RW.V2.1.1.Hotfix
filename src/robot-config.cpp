@@ -75,8 +75,8 @@ double wheel_distance_in = (36.0/48.0)*2.5*M_PI;
 // NOTE: these are placeholder values — run the auto-tuner or hand-tune before use.
 
 //.505kp .042 kd
-double distance_kp = 0.295, distance_ki = 0, distance_kd = 0.042;
-double turn_kp = .2, turn_ki = 0, turn_kd = 0.05;
+double distance_kp = 0.995, distance_ki = 0, distance_kd = 0.062;
+double turn_kp = .1, turn_ki = 0, turn_kd = .08;
 double heading_correction_kp = 0.19, heading_correction_ki = 0, heading_correction_kd = 0.02;
 
 // Enable or disable the use of tracking wheels

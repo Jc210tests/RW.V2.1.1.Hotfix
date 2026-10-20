@@ -269,9 +269,9 @@ void telop() {
     }
 
     if(controller_1.ButtonR2.pressing()) {
-      claw.spin(fwd, 12, volt);
+      claw.spin(fwd, 6, volt);
     } else if (controller_1.ButtonL2.pressing()) {
-      claw.spin(reverse, 12, volt);
+      claw.spin(reverse, 3, volt);
     }else {
       claw.stop(hold);
     }
@@ -301,9 +301,8 @@ right_chassis.setStopping(brake);
 
   // Write your autonomous routine here.
 
-moveToPoint(0,10,1,1000,true, 12, false);
-turnToAngle(90, 1000, true, 12);
-driveTo(10, 1000, true, 12);
+moveToPoint(0,20,1,2000,true, 10,false);
+
 
 }
 //add more autons here 
